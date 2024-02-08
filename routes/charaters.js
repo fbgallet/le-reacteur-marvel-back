@@ -13,7 +13,7 @@ router.get("/characters", async (req, res) => {
       `https://lereacteur-marvel-api.herokuapp.com/characters?apiKey=${process.env.MARVEL_API_KEY}${queryString}`
     );
     // console.log(data);
-    res.status(200).json({ message: data });
+    res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -27,7 +27,7 @@ router.get("/character/:characterId", async (req, res) => {
       `https://lereacteur-marvel-api.herokuapp.com/character/${characterId}?apiKey=${process.env.MARVEL_API_KEY}`
     );
     console.log(data);
-    res.status(200).json({ message: data });
+    res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
