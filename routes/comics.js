@@ -2,13 +2,14 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-router.get("/comics", async (req, res) => {
+router.post("/comics", async (req, res) => {
   try {
     const limit = "100";
     const { page, title } = req.body;
     const queryString = `${
       page ? "&limit=" + limit + "&skip=" + ((page - 1) * limit).toString() : ""
     }${title ? "&title=" + title : ""}`;
+    console.log("queryString :>> ", queryString);
     const { data } = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/comics?apiKey=${process.env.MARVEL_API_KEY}${queryString}`
     );
