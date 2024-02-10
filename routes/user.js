@@ -47,6 +47,7 @@ router.post("/user/signup", async (req, res) => {
 
 router.post("/user/login", async (req, res) => {
   try {
+    console.log("req.body :>> ", req.body);
     const { email, password } = req.body;
     if (!email || !password) {
       res
@@ -55,6 +56,7 @@ router.post("/user/login", async (req, res) => {
       return;
     }
     const user = await User.findOne({ email: email });
+    console.log("user :>> ", user);
     if (!user) {
       res
         .status(400)
@@ -65,7 +67,47 @@ router.post("/user/login", async (req, res) => {
       res.status(400).json({ message: "Wrong password!" });
       return;
     }
+    console.log("matching password");
     res.status(200).json({ message: "User logged in!", user: user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post("/user/favorite/", async (req, res) => {
+  try {
+    // console.log("req.body :>> ", req.body);
+    const { token, type, id, action } = req.body;
+    if (!type || !id) {
+      res
+        .status(400)
+        .json({ message: "Wrong request. Type and item id are needed" });
+      return;
+    }
+    const user = await User.findOne({ token: token });
+    console.log("user :>> ", user);
+    if (!user) {
+      res.status(400).json({
+        message: "This user doesn't exist. Sign up before add favorite.",
+      });
+      return;
+    }
+    let msg = "";
+    if (action === "remove") {
+      let indexOfFav = user.favorites[type + "s"].indexOf(id);
+      user.favorites[type + "s"].splice(indexOfFav, 1);
+      msg = "Removed a " + type + " from favorites";
+    } else {
+      user.favorites[type + "s"].push(id);
+      msg = "Added a " + type + " in favorites";
+    }
+    user.markModified("favorites");
+    user.save();
+    // console.log(user);
+    res.status(200).json({
+      message: msg,
+      favorites: user.favorites,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -5,7 +5,10 @@ const User = mongoose.model("User", {
   token: String,
   hash: String,
   salt: String,
-  favorites: [Object],
+  favorites: {
+    characters: [String],
+    comics: [String],
+  },
 });
 
 module.exports = User;
