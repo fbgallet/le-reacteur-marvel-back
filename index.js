@@ -7,8 +7,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// mongoose.connect(process.env.MONGODB_URI + "Marvel");
-mongoose.connect("mongodb://localhost:27017/Marvel"); // 127.0.0.1
+// Local db
+// mongoose.connect("mongodb://localhost:27017/Marvel"); // 127.0.0.1
+//
+// Distant db on Mongodb Atlas
+mongoose.connect(process.env.MONGODB_URI + "Marvel");
 
 const userRoutes = require("./routes/user");
 const comicsRoutes = require("./routes/comics");
