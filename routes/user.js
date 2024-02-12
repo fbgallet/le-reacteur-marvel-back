@@ -94,9 +94,11 @@ router.post("/user/favorite/", async (req, res) => {
       const indexOfFav = user.favorites[type + "s"].indexOf(id);
       user.favorites[type + "s"].splice(indexOfFav, 1);
       msg = "Removed a " + type + " from favorites";
-    } else {
-      user.favorites[type + "s"].push(id);
+    } else if (action === "add") {
+      user.favorites[type + "s"].unshift(id);
       msg = "Added a " + type + " in favorites";
+    } else {
+      msg = "Load favorites from server";
     }
     user.markModified("favorites");
     user.save();
