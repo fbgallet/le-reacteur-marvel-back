@@ -75,7 +75,7 @@ router.post("/user/favorite/", async (req, res) => {
   try {
     // console.log("req.body :>> ", req.body);
     const { token, type, id, action } = req.body;
-    if (!type || !id) {
+    if ((action === "remove" || action === "add") && (!type || !id)) {
       res
         .status(400)
         .json({ message: "Wrong request. Type and item id are needed" });
