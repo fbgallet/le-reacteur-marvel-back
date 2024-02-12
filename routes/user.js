@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-// const uploadToCloudinaryAngGetUrl = require("../utils/cloudinary");
-// const fileUpload = require("express-fileupload");
 const uid2 = require("uid2");
 const encBase64 = require("crypto-js/enc-base64");
 const SHA256 = require("crypto-js/sha256");
@@ -14,8 +12,7 @@ router.post("/user/signup", async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!isValidEmail(email)) {
-      alert("invalid email !");
-      res.status(400).json({ message: "email invalid." });
+      res.status(400).json({ message: "Email invalid." });
       return;
     }
     if (!(await isNewUser(email))) {
@@ -47,7 +44,7 @@ router.post("/user/signup", async (req, res) => {
 
 router.post("/user/login", async (req, res) => {
   try {
-    console.log("req.body :>> ", req.body);
+    // console.log("req.body :>> ", req.body);
     const { email, password } = req.body;
     if (!email || !password) {
       res
@@ -56,7 +53,7 @@ router.post("/user/login", async (req, res) => {
       return;
     }
     const user = await User.findOne({ email: email });
-    console.log("user :>> ", user);
+    // console.log("user :>> ", user);
     if (!user) {
       res
         .status(400)
@@ -68,7 +65,7 @@ router.post("/user/login", async (req, res) => {
       return;
     }
     console.log("matching password");
-    res.status(200).json({ message: "User logged in!", user: user });
+    res.status(200).json({ message: "User logged in!", user: user.token });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -85,7 +82,7 @@ router.post("/user/favorite/", async (req, res) => {
       return;
     }
     const user = await User.findOne({ token: token });
-    console.log("user :>> ", user);
+    // console.log("user :>> ", user);
     if (!user) {
       res.status(400).json({
         message: "This user doesn't exist. Sign up before add favorite.",
@@ -94,7 +91,7 @@ router.post("/user/favorite/", async (req, res) => {
     }
     let msg = "";
     if (action === "remove") {
-      let indexOfFav = user.favorites[type + "s"].indexOf(id);
+      const indexOfFav = user.favorites[type + "s"].indexOf(id);
       user.favorites[type + "s"].splice(indexOfFav, 1);
       msg = "Removed a " + type + " from favorites";
     } else {

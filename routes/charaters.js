@@ -5,13 +5,13 @@ const axios = require("axios");
 
 router.post("/characters", async (req, res) => {
   try {
-    console.log("req.body :>> ", req.body);
+    // console.log("req.body :>> ", req.body);
     const limit = "100";
     const { page, name } = req.body;
     const queryString = `${
       page ? "&limit=" + limit + "&skip=" + ((page - 1) * limit).toString() : ""
     }${name ? "&name=" + name : ""}`;
-    console.log("queryString :>> ", queryString);
+    // console.log("queryString :>> ", queryString);
     const { data } = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/characters?apiKey=${process.env.MARVEL_API_KEY}${queryString}`
     );
@@ -29,7 +29,7 @@ router.get("/character/:characterId", async (req, res) => {
     const { data } = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/character/${characterId}?apiKey=${process.env.MARVEL_API_KEY}`
     );
-    console.log(data);
+    // console.log(data);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ message: error.message });
